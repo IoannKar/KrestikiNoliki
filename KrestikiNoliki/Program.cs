@@ -3,40 +3,42 @@
 class KrestikINoliki
 {
     static int Player = 1;
-    static char[,] kletka = new char[3, 3];
-    private static int kolichestvoHodov = 0;
+    const char X = 'X';
+    const char O = 'O';
+    static char[,] chars = new char[3, 3];
+    private static int KolichestvoHodov = 0;
 
     static void Main()
     {
 
         do
         {
-            Tablica();
-            vvodchisla();
-        } while (kolichestvoHodov < 9 && !proverka());
+            GenerationTable();
+            BasicProcessing();
+        } while (KolichestvoHodov < 9 && !CheckingForWin());
     }
 
-    public static void Tablica()
+    public static void GenerationTable()
     {
         Console.Clear();
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                if (kletka[i, j] == '\0')
+                if (chars[i, j] == '\0')
                     Console.Write($"{(i * 3 + j + 1)}|");
                 else
                 {
 
-                    if (kletka[i, j] == 'X')
+                    if (chars[i, j] == X)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.Write("X|");
+                        Console.Write($"{X}|");
                     }
-                    else if (kletka[i, j] == 'O')
+                    else if (chars[i, j] == O)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("O|");
+                        Console.Write($"{O}|");
                     }
                 }
                 Console.ResetColor();
@@ -49,7 +51,7 @@ class KrestikINoliki
 
     }
 
-    public static void vvodchisla()
+    public static void BasicProcessing()
     {
         string input;
         int prediction;
@@ -69,19 +71,20 @@ class KrestikINoliki
                     int g = (prediction - 1) / 3;
                     int v = (prediction - 1) % 3;
 
-                    if (kletka[g, v] == '\0')
+                    if (chars[g, v] == '\0')
                     {
-                        kletka[g, v] = (Player == 1) ? 'X' : 'O';
-                        kolichestvoHodov++;
-                        if (proverka())
+                        chars[g, v] = (Player == 1) ? X : O;
+                        KolichestvoHodov++;
+
+                        if (CheckingForWin())
                         {
-                            Tablica();
+                            GenerationTable();
                             Console.WriteLine($"Игрок {Player} выиграл!");
                             return;
                         }
-                        if (kolichestvoHodov == 9)
+                        if (KolichestvoHodov == 9)
                         {
-                            Tablica();
+                            GenerationTable();
                             Console.WriteLine("Игра завершена ничьей!");
                             return;
                         }
@@ -91,7 +94,7 @@ class KrestikINoliki
                     {
                         Console.WriteLine("Ошибка: эта клетка уже занята.");
                     }
-                    Tablica();
+                    GenerationTable();
                 }
             }
             else
@@ -102,13 +105,13 @@ class KrestikINoliki
         } while (prediction < 1 || prediction > 9);
     }
 
-    public static bool proverka()
+    public static bool CheckingForWin()
     {
 
 
         for (int i = 0; i < 3; i++)
         {
-            if (kletka[i, 0] != '\0' && kletka[i, 0] == kletka[i, 1] && kletka[i, 1] == kletka[i, 2])
+            if (chars[i, 0] != '\0' && chars[i, 0] == chars[i, 1] && chars[i, 1] == chars[i, 2])
             {
                 return true;
             }
@@ -117,22 +120,21 @@ class KrestikINoliki
 
         for (int i = 0; i < 3; i++)
         {
-            if (kletka[0, i] != '\0' && kletka[0, i] == kletka[1, i] && kletka[1, i] == kletka[2, i])
+            if (chars[0, i] != '\0' && chars[0, i] == chars[1, i] && chars[1, i] == chars[2, i])
             {
                 return true;
             }
         }
 
 
-        if (kletka[0, 0] != '\0' && kletka[0, 0] == kletka[1, 1] && kletka[1, 1] == kletka[2, 2])
+        if (chars[0, 0] != '\0' && chars[0, 0] == chars[1, 1] && chars[1, 1] == chars[2, 2])
         {
             return true;
         }
-        if (kletka[0, 2] != '\0' && kletka[0, 2] == kletka[1, 1] && kletka[1, 1] == kletka[2, 0])
+        if (chars[0, 2] != '\0' && chars[0, 2] == chars[1, 1] && chars[1, 1] == chars[2, 0])
         {
             return true;
         }
 
         return false;
     }
-}
