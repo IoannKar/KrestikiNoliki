@@ -1,21 +1,20 @@
 ﻿using System;
 
-class KrestikINoliki
+class TicTacToe
 {
     static int Player = 1;
     const char X = 'X';
     const char O = 'O';
     static char[,] chars = new char[3, 3];
-    private static int KolichestvoHodov = 0;
+    private static int NumberOfMoves = 0;
 
     static void Main()
     {
-
         do
         {
             GenerationTable();
             BasicProcessing();
-        } while (KolichestvoHodov < 9 && !CheckingForWin());
+        } while (NumberOfMoves < 9 && !CheckingForWin());
     }
 
     public static void GenerationTable()
@@ -29,7 +28,6 @@ class KrestikINoliki
                     Console.Write($"{(i * 3 + j + 1)}|");
                 else
                 {
-
                     if (chars[i, j] == X)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
@@ -43,19 +41,14 @@ class KrestikINoliki
                 }
                 Console.ResetColor();
             }
-
             Console.WriteLine();
         }
-
-
-
     }
 
     public static void BasicProcessing()
     {
         string input;
         int prediction;
-
         do
         {
             Console.WriteLine("Игрок {0}, пожалуйста, введите число от 1 до 9:", Player); ;
@@ -74,15 +67,14 @@ class KrestikINoliki
                     if (chars[g, v] == '\0')
                     {
                         chars[g, v] = (Player == 1) ? X : O;
-                        KolichestvoHodov++;
-
+                        NumberOfMoves++;
                         if (CheckingForWin())
                         {
                             GenerationTable();
                             Console.WriteLine($"Игрок {Player} выиграл!");
                             return;
                         }
-                        if (KolichestvoHodov == 9)
+                        if (NumberOfMoves == 9)
                         {
                             GenerationTable();
                             Console.WriteLine("Игра завершена ничьей!");
@@ -135,6 +127,6 @@ class KrestikINoliki
         {
             return true;
         }
-
         return false;
     }
+}
